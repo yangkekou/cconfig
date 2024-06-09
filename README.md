@@ -1,2 +1,2 @@
 # cconfig
-a tool export excel to data for typescript(most using in cocos creator)
+a tool exporting excel to data for typescript(most using in cocos creator)
