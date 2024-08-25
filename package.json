@@ -1,0 +1,40 @@
+{
+  "name": "cconfig",
+  "version": "0.0.1",
+  "description": "a tool to export excel data for coding using.",
+  "bin": "./bin/index.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "node ./test/test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yangkekou/cconfig.git"
+  },
+  "keywords": [
+    "excel",
+    "cocos creator",
+    "typescript",
+    "config"
+  ],
+  "author": "springYKK",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yangkekou/cconfig/issues"
+  },
+  "homepage": "https://github.com/yangkekou/cconfig#readme",
+  "dependencies": {
+    "commander": "^12.1.0",
+    "ejs": "^3.1.10",
+    "glob": "^10.4.1",
+    "read-excel-file": "^5.8.1",
+    "yaml": "^2.4.5"
+  },
+  "devDependencies": {
+    "jsdoc": "^4.0.3",
+    "prettier": "3.3.1"
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
+  }
+}

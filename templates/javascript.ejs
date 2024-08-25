@@ -1,0 +1,9 @@
+<%=include('auto')%>
+<%_ if(schema) { -%>
+<%=include('js_type',{schema, util})%>
+<% } else { -%>
+<% schemas.forEach((schema)=>{ -%>
+<%=include('js_type',{schema, util})%>
+<%})-%>
+<%}%>
+<%= '\n' %>

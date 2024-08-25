@@ -1,0 +1,24 @@
+<%_if(schema) {-%>
+<%_switch(schema.sheetType){
+case 1: { -%>
+<%=`export enum ${schema.name}{` %>
+<% schema.attrs.forEach((attr)=>{-%>
+<%-"\t /**" %>
+<%-`\t * ${attr.comment}` %>
+<%-"\n\t **/" %>
+<%=`\t${attr.name} = ${attr.value},`%>
+<% }) -%>
+<%='}'%>
+<% break }-%> 
+<% default: {-%>
+<%=`export class ${schema.name} {` %>
+<% schema.attrs.forEach((attr)=>{-%>
+<%-"\t /**" %>
+<%-`\t * ${attr.comment}` %>
+<%-"\n\t **/" %>
+<%=`\tpublic ${attr.name}: ${util.getTypeStr(attr.type)};`%>
+<% }) -%>
+<%='}'%>
+<% break }-%> 
+<% } -%>
+<% } -%>

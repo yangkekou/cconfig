@@ -1,0 +1,26 @@
+<%_if(schema) {-%>
+<%_switch(schema.sheetType){
+case 1: { -%>
+<%=`export const ${schema.name} = {` %>
+<% schema.attrs.forEach((attr)=>{-%>
+<%-"\t /**" %>
+<%-`\t * ${attr.comment}` %>
+<%-`\t * @property {${util.getTypeStr(attr.type)}} ${attr.name}` -%>
+<%-"\n\t **/" %>
+<%=`\t${attr.name}: ${attr.value},`%>
+<% }) -%>
+<%='}'%>
+<% break }-%> 
+<% default: {-%>
+<%=`export class ${schema.name} {` %>
+<% schema.attrs.forEach((attr)=>{-%>
+<%-"\t /**" %>
+<%-`\t * ${attr.comment}` %>
+<%-`\t * @property {${util.getTypeStr(attr.type)}} ${attr.name}` -%>
+<%-"\n\t **/" %>
+<%=`\t${attr.name};`%>
+<% }) -%>
+<%='}'%>
+<% break }-%> 
+<% } -%>
+<% } -%>

@@ -1,0 +1,19 @@
+files:
+  path: "./test/testCfg.xlsx"
+  includes:
+    - "*.xlsx"
+  excludes:
+    - "*.md"
+    - "*.log"
+log:
+  level: info
+  output: stdout
+outputs:
+  - tag: "js"
+    format: json
+    script: "./test/out/js/config.js"
+    data: "./test/out/js/config.json"
+  - tag: "ts"
+    format: json
+    script: "./test/out/ts/config.ts"
+    data: "./test/out/ts/config.json"
