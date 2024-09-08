@@ -1,0 +1,20 @@
+<% function wrriter(type, attr) {-%>
+<%-"\t /**"%>
+<%-`\t * ${attr.comment}`-%>
+<%-"\n\t **/"%>
+<% switch(type){
+case 1:{-%>
+<%=`\t${attr.name} = ${attr.value},`%>
+<%}-%>
+<% break-%>
+<% case 2:{-%>
+<%=`\tpublic ${attr.name}: ${util.getTypeStr(attr.type)} = ${attr.value};`%>
+<% }-%>
+<% break-%>
+<% default:{-%>
+<%=`\tpublic ${attr.name}: ${util.getTypeStr(attr.type)};`%>
+<% }-%>
+<% break -%>
+<% }-%>
+<% }-%>
+<%=wrriter(type, attr) %>

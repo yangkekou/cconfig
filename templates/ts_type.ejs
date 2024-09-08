@@ -2,21 +2,17 @@
 <%_switch(schema.sheetType){
 case 1: { -%>
 <%=`export enum ${schema.name}{` %>
-<% schema.attrs.forEach((attr)=>{-%>
-<%-"\t /**" %>
-<%-`\t * ${attr.comment}` %>
-<%-"\n\t **/" %>
-<%=`\t${attr.name} = ${attr.value},`%>
-<% }) -%>
+<% schema.attrs.forEach((attr,index)=>{-%>
+<%=include('ts_field',{type:schema.sheetType, attr, util})-%>
+<%=`${index != schema.attrs.length - 1 ? '\n':''}`-%>
+<%})-%>
 <%='}'%>
 <% break }-%> 
 <% default: {-%>
 <%=`export class ${schema.name} {` %>
-<% schema.attrs.forEach((attr)=>{-%>
-<%-"\t /**" %>
-<%-`\t * ${attr.comment}` %>
-<%-"\n\t **/" %>
-<%=`\tpublic ${attr.name}: ${util.getTypeStr(attr.type)};`%>
+<% schema.attrs.forEach((attr,index)=>{-%>
+<%=include('ts_field',{type:schema.sheetType, attr, util})-%>
+<%=`${index != schema.attrs.length - 1 ? '\n':''}`-%>
 <% }) -%>
 <%='}'%>
 <% break }-%> 
