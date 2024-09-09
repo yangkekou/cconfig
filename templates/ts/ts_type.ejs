@@ -1,0 +1,46 @@
+<%_if(schema) {-%>
+<%_switch(schema.sheetType){
+case 1: { -%>
+<%=`enum ${schema.name}{` %>
+<% schema.attrs.forEach((attr,index)=>{-%>
+<%=include('ts/ts_field',{type:schema.sheetType, attr, util})-%>
+<%=`${index != schema.attrs.length - 1 ? '\n':''}`-%>
+<%})-%>
+<%='}'%>
+<% break }-%>
+<% case 2: { -%>
+<%=`const ${schema.name}={` %>
+<% schema.attrs.forEach((attr,index)=>{-%>
+<%=include('ts/ts_field',{type:schema.sheetType, attr, util})-%>
+<%=`${index != schema.attrs.length - 1 ? '\n':''}`-%>
+<%})-%>
+<%='}'%>
+<% break }-%>
+<% default: {-%>
+<%=`class ${schema.name} {` %>
+<% schema.attrs.forEach((attr,index)=>{-%>
+<%=include('ts/ts_field',{type:schema.sheetType, attr, util})-%>
+<%=`${index != schema.attrs.length - 1 ? '\n':''}`-%>
+<% }) -%>
+<%if(schema.sheetType === 0) {-%>
+<%#split for init%>
+<%=`\tprivate static data: ${schema.name}[];`%>
+<%-`\tprivate static dataMap: Map<${util.getTypeStr(schema.attrs[0].type)}, ${schema.name}>;\n` %>
+<%=`\tpublic static init(data: ${schema.name}[]): void {`%>
+<%='\t\tthis.data = data;'%>
+<%='\t\tthis.dataMap = new Map();'%>
+<%-'\t\tdata.forEach(item => {' %>
+<%-'\t\t\tconst key = item["'-%>
+<%-`${schema.attrs[0].name}`-%>
+<%-'"];'%>
+<%='\t\t\tif(!this.dataMap.has(key)) this.dataMap.set(key, item);'%>
+<%='\t\t})'%>
+<%='\t}'%>
+<%#split for get%>
+<%-`\tpublic static get(key: ${util.getTypeStr(schema.attrs[0].type)}): ${schema.name} | undefined {return this.dataMap.get(key);}`%>
+<%-`\tpublic static getAll(): ${schema.name}[]{return Array.from(this.data);}`%>
+<%}-%>
+<%='}'-%>
+<% break }-%>
+<% } -%>
+<% } -%>

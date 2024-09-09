@@ -2,6 +2,7 @@ const fs = require('fs');
 const ejs = require('ejs');
 const path = require('path');
 const { DataSchema } = require('../define');
+const { unescape } = require('querystring');
 /**
  *
  * @param {string} template 模版的路径
@@ -53,21 +54,24 @@ Coder.prototype = {
                 const data = ejs.render(
                     this.template,
                     { schemas: null, schema: schemas[i], util: this.util },
-                    { views: [`${path.join(process.cwd(), 'templates')}`] }
+                    {
+                        views: [`${path.join(process.cwd(), 'templates')}`],
+                        strict: false,
+                    }
                 );
                 const out = path.join(this.out, `${schemas[i].name}.js`);
-                fs.writeFileSync(out, data, { encoding: 'utf-8' });
+                fs.writeFileSync(out, unescape(data), { encoding: 'utf-8' });
             }
         } else {
             const data = ejs.render(
                 this.template,
                 { schemas: schemas, schema: null, util: this.util },
-                { views: [`${path.join(process.cwd(), 'templates')}`] }
+                {
+                    views: [`${path.join(process.cwd(), 'templates')}`],
+                    strict: false,
+                }
             );
-
-            fs.writeFileSync(this.out, data, {
-                encoding: 'utf-8',
-            });
+            fs.writeFileSync(this.out, unescape(data), { encoding: 'utf-8' });
         }
     },
 

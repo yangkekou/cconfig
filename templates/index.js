@@ -53,6 +53,6 @@ module.exports.util = {
     ts: new JsUtil(),
 };
 module.exports.templates = {
-    js: path.resolve(__dirname, './javascript.ejs'),
-    ts: path.resolve(__dirname, './typescript.ejs'),
+    js: path.resolve(__dirname, './ts/javascript.ejs'),
+    ts: path.resolve(__dirname, './ts/typescript.ejs'),
 };

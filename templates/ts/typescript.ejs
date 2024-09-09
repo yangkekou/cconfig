@@ -1,0 +1,21 @@
+<%=include('auto')%>
+<%_ if(schema) { -%>
+<%-include('ts/ts_type',{schema, util})%>
+<% } else { -%>
+<% schemas.forEach((schema)=>{ -%>
+<%-include('ts/ts_type',{schema, util})%>
+<%})-%>
+<%='\nexport const CConfig = {'%>
+<% schemas.forEach((schema)=>{ -%>
+<%=`\t${schema.name},`%>
+<% })-%>
+<%='\tinit(input: string | ArrayBuffer): void {'%>
+<%- '\t\tconst data = typeof input === "string" ? JSON.parse(input) : null;'%>
+<% schemas.forEach((schema)=>{-%>
+<% if(schema.sheetType === 0){-%>
+<%-`\t\tthis.${schema.name}.init(data["${schema.name}"]);`%>
+<%}-%>
+<%})-%>
+<%='\t}'%>
+<%='}'%>
+<%}-%>

@@ -1,8 +1,0 @@
-<%=include('auto')%>
-<%_ if(schema) { -%>
-<%=include('ts_type',{schema, util})%>
-<% } else { -%>
-<% schemas.forEach((schema)=>{ -%>
-<%=include('ts_type',{schema, util})%>
-<%})-%>
-<%}-%>
