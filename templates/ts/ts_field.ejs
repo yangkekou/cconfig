@@ -8,11 +8,11 @@ case 1:{-%>
 <%}-%>
 <% break-%>
 <% case 2:{-%>
-<%=`\tpublic ${attr.name}: ${util.getTypeStr(attr.type)} = ${attr.value};`%>
+<%=`\tpublic ${attr.name}: ${util.getTypeStr(attr)} = ${attr.value};`%>
 <% }-%>
 <% break-%>
 <% default:{-%>
-<%=`\tpublic ${attr.name}: ${util.getTypeStr(attr.type)};`%>
+<%=`\tpublic ${attr.name}: ${util.getTypeStr(attr)};`%>
 <% }-%>
 <% break -%>
 <% }-%>

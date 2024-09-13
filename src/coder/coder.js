@@ -49,13 +49,14 @@ Coder.prototype = {
      * @param {DataSchema[]} schemas
      */
     gen: function (schemas) {
+        const package_path = `${path.resolve(__dirname, '../../')}`;
         if (this.split) {
             for (let i = 0; i < schemas.length; i++) {
                 const data = ejs.render(
                     this.template,
                     { schemas: null, schema: schemas[i], util: this.util },
                     {
-                        views: [`${path.join(process.cwd(), 'templates')}`],
+                        views: [`${path.join(package_path, 'templates')}`],
                         strict: false,
                     }
                 );
@@ -67,7 +68,7 @@ Coder.prototype = {
                 this.template,
                 { schemas: schemas, schema: null, util: this.util },
                 {
-                    views: [`${path.join(process.cwd(), 'templates')}`],
+                    views: [`${path.join(package_path, 'templates')}`],
                     strict: false,
                 }
             );

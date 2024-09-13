@@ -97,10 +97,20 @@ const dataDefaultValue = {
     object: null,
 };
 
+const simpleTypeToName = new Map([
+    [dataType.Boolean, dataTypeName.Boolean],
+    [dataType.Char, dataTypeName.Char],
+    [dataType.Float, dataTypeName.Float],
+    [dataType.Float64, dataTypeName.Float64],
+    [dataType.Int, dataTypeName.Int64],
+    [dataType.String, dataTypeName.String],
+]);
+
 module.exports = {
     dataTag,
     dataType,
     sheetType,
     dataTypeName,
     dataDefaultValue,
+    simpleTypeToName,
 };

@@ -4,11 +4,11 @@ const {
     sheetType,
     dataTypeName,
     dataDefaultValue,
+    simpleTypeToName,
 } = require('./define');
 /**
  * @param {dataTag} tag
  * @param {(dataType | string)} type
- * @param {string} typeName only using when type is enum or object
  * @param {string} name
  * @param {string} comment comment for this attribute
  * @param {string} [value] declare value for this attribute
@@ -16,10 +16,12 @@ const {
 function DataSchemaAttr(tag, type, name, comment, value) {
     this.tag = tag;
     this.type = typeof type === 'string' ? this._getType(type) : type;
+    this.typeName = !this._isCustomType()
+        ? simpleTypeToName.get(this.type)
+        : type.trim();
     this.name = name;
-    this.typeName = '';
-    this.comment = comment;
     this.value = value;
+    this.comment = comment;
 }
 
 DataSchemaAttr.arrayPreRegx = /^array\((?<name>\s*[A-Za-z]+\w*\s*)\)/;
@@ -50,6 +52,19 @@ DataSchemaAttr.prototype = {
             default:
                 return dataType.None;
         }
+    },
+
+    /**
+     * whether custom type
+     * @returns {boolean}
+     */
+    _isCustomType() {
+        const flag = this.type & dataType.SimpleMask;
+        return (
+            flag === dataType.None ||
+            flag === dataType.Enum ||
+            flag === dataType.Object
+        );
     },
 
     /**
@@ -108,12 +123,13 @@ DataSchemaAttr.prototype = {
     },
 
     /**
-     * init the schema
+     * bind the schema attr for custom type 
      */
-    init: function () {
-        if ((this.type & dataType.SimpleMask) != dataType.None) {
+    bind: function () {
+        if (!this._isCustomType()) {
             return;
         }
+
         const composite = this.type & dataType.CompositeMask;
         this.type = this._getCustomType(this.typeName) | composite;
     },
@@ -184,7 +200,7 @@ DataSchema._schemas = new Map();
  * @returns {DataSchema}
  */
 DataSchema.get = function (name) {
-    this._schemas.get(name);
+    return this._schemas.get(name);
 };
 
 /**
@@ -289,9 +305,27 @@ DataSchema.prototype = {
         for (let i = 0; i < data.length; i++) {
             const item = {};
             for (let j = 0; j < this.attrs.length; j++) {
-                item[this.attrs[j].name] = !data[i][j]
-                    ? this.attrs[j].getDefaultValue()
-                    : data[i][j];
+                const attr = this.attrs[j]
+                switch (attr.type) {
+                    case dataType.Object:
+                        {
+                            const schema = DataSchema.get(attr.typeName)
+                            item[attr.name] = schema.create(data[i][j])//todo:
+                        }
+                        break;
+                    case dataType.Enum:{
+                        const schema = DataSchema.get(attr.typeName)
+                        item[attr.name] = schema.attrs.find(
+                            (a) => a.name === data[i][j]
+                        )?.value;
+                    }
+                        break;
+                    default:
+                        item[attr.name] = !data[i][j]
+                            ? attr.getDefaultValue()
+                            : data[i][j];
+                }
+
             }
 
             result.push(item);
@@ -300,8 +334,8 @@ DataSchema.prototype = {
         return result;
     },
 
-    init: function () {
-        this.attrs.forEach((attr) => attr.init());
+    bind: function () {
+        this.attrs.forEach((attr) => attr.bind());
     },
 
     /**

@@ -25,7 +25,7 @@ case 1: { -%>
 <%if(schema.sheetType === 0) {-%>
 <%#split for init%>
 <%=`\tprivate static data: ${schema.name}[];`%>
-<%-`\tprivate static dataMap: Map<${util.getTypeStr(schema.attrs[0].type)}, ${schema.name}>;\n` %>
+<%-`\tprivate static dataMap: Map<${util.getTypeStr(schema.attrs[0])}, ${schema.name}>;\n` %>
 <%=`\tpublic static init(data: ${schema.name}[]): void {`%>
 <%='\t\tthis.data = data;'%>
 <%='\t\tthis.dataMap = new Map();'%>
@@ -37,7 +37,7 @@ case 1: { -%>
 <%='\t\t})'%>
 <%='\t}'%>
 <%#split for get%>
-<%-`\tpublic static get(key: ${util.getTypeStr(schema.attrs[0].type)}): ${schema.name} | undefined {return this.dataMap.get(key);}`%>
+<%-`\tpublic static get(key: ${util.getTypeStr(schema.attrs[0])}): ${schema.name} | undefined {return this.dataMap.get(key);}`%>
 <%-`\tpublic static getAll(): ${schema.name}[]{return Array.from(this.data);}`%>
 <%}-%>
 <%='}'-%>

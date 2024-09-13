@@ -1,5 +1,6 @@
 const path = require('path');
 const { dataType } = require('../src/define');
+const {DataSchemaAttr} = require("../src/schema")
 
 /**
  * @typedef {object} TemplateUtil
@@ -8,18 +9,13 @@ const { dataType } = require('../src/define');
 
 function JsUtil() {}
 /**
- * @param {dataType | string} t
+ * @param {DataSchemaAttr} attr
  */
-JsUtil.prototype.getTypeStr = function (t) {
-    if (typeof t === 'string') {
-        return t;
-    }
-
-    const p_type = t & dataType.SimpleMask;
-    const c_type = t & dataType.CompositeMask;
+JsUtil.prototype.getTypeStr = function (attr) {
+    const p_type = attr.type & dataType.SimpleMask;
+    const c_type = attr.type & dataType.CompositeMask;
 
     let str = '';
-
     switch (p_type) {
         case dataType.Boolean:
             str = 'boolean';
@@ -33,6 +29,11 @@ JsUtil.prototype.getTypeStr = function (t) {
         case dataType.String:
         case dataType.Char:
             str = 'string';
+            break;
+        case dataType.Enum:
+        case dataType.None:
+        case dataType.Object:
+            str = attr.typeName;
             break;
     }
 

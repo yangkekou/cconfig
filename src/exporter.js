@@ -40,14 +40,15 @@ Exporter.prototype.export = function (tag) {
             return;
         }
 
-        const parser = new excel(
-            new Logger(this.config.log?.level || LogLevel.ERROR)
-        );
+        const level = this.config.log?.level
+            ? Logger.getLevel(this.config.log.level.trim())
+            : LogLevel.ERROR;
+        const parser = new excel(new Logger(level));
 
         if (!stats.isDirectory()) {
             parser.parse(this.config.files.path).then((data) => {
                 DataSchema.schemas().forEach((schema) => {
-                    schema.init();
+                    schema.bind();
                 });
 
                 /**

@@ -9,8 +9,8 @@
 <% schemas.forEach((schema)=>{ -%>
 <%=`\t${schema.name},`%>
 <% })-%>
-<%='\tinit(input: string | ArrayBuffer): void {'%>
-<%- '\t\tconst data = typeof input === "string" ? JSON.parse(input) : null;'%>
+<%='\tinit(input: any): void {'%>
+<%- '\t\tconst data = typeof input === "string" ? JSON.parse(input) : input;'%>
 <% schemas.forEach((schema)=>{-%>
 <% if(schema.sheetType === 0){-%>
 <%-`\t\tthis.${schema.name}.init(data["${schema.name}"]);`%>
